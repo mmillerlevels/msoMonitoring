@@ -1,6 +1,5 @@
 ## msoMonitoring
-
-###Getting a script together for better MSO checks
+### Getting a script together for better MSO checks
 
 Right now the script is very barebones, however, this is being written to be future proof.  I want to be able to add any modules we'd like.  Right now I've got a 'system' module working (Kinda), and I plan on adding specific application tests.  
 
