@@ -58,6 +58,7 @@ sub system_check ($$$$$) {
 	elsif ( $function eq "DiskSpace" ) {
 		my $df = `/bin/df -h / | /bin/grep -A1 dev | grep \/\$ | /usr/bin/awk '{print \$1","\$2","\$3}'`;
 			$df =~ s/(\n\n\n|G)//go;
+		#This is wrong, need to fix so drive use percentage is correct
 		my ($drive,$drive_size,$drive_used) = split(/,/, $df);
 		print BLUE . "/bin/df -h / | /bin/grep -A1 dev | grep \/$ | /usr/bin/awk '{print \$1","\$2","\$3}'" . RESET . "\n" if $DEBUG;
 		$status = "PASS" if (($drive_used/$drive_size) * 100) < $param1;
@@ -98,31 +99,8 @@ sub system_check ($$$$$) {
 	print $group . " " . $name . " " . $status . " " . $notes . "\n";;
 }
 
-#isub PrintStatus ($$$$) {
-#	my ($group,$name,$status,$notes) = @_;
-#
-#	if ( $status eq "FAIL" && $snmp eq "test" ) {
-#		print "CHECK\n";
-#		exit EXIT_BAD;
-#	}
-#	else {
-#		push @group_status, "$status";
-#	}
-#
-#	if ( $snmp eq "results" ) {
-#		print $name . ": " . $status . "\n";
-#		print "\t" . $notes . "\n";
-#		if ($status eq "FAIL") {
-#			$hasFailed = 1;
-#		}
-#	}
-#	elsif ( !$output ) {
+##This is how I'm going to make the output a bit prettier
 #		print GREEN, $name . ": " . "$status\n", RESET if $status eq "PASS";
 #		print GREEN, $name . ": " . "$status\n", RESET if $status eq "N/A";
 #		print RED,   $name . ": " . "$status\n", RESET if $status eq "FAIL";
 #		print BLUE,  $name . ": " . "$status\n", RESET if $status eq "UNKNOWN";
-#		if ($status eq "FAIL") {
-#			$hasFailed = 1;
-#		}
-#		print "\t" . $notes . "\n";
-#	}
