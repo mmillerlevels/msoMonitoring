@@ -1,8 +1,8 @@
 group	name	func	param1	param2	param3
-system	CPU Usage	CpuWarn	7
+system	CPU Usage	CpuWarn	5
 system	Drive Errors	driveErrors	translated ATA
 system	Drive Errors	driveErrors	failed command: READ DMA EXT
-system	Drive Usage	DiskSpace	85
+system	Drive Usage	DiskSpace	75
 system	Interface Errors	interfaceErrors	eth0
-system	Ram Usage	memUsage	mem	90
+system	Ram Usage	memUsage	mem	85
 system	Swap Usage	memUsage	swap	50
