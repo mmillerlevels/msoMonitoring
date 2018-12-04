@@ -8,13 +8,13 @@ use constant EXIT_BAD => 1;
 my $DEBUG = '';
 GetOptions('debug' => \$DEBUG);
 
-my $path_to_file = 'myTSV.tsv'; #This to be cheanged to a csv
+my $path_to_file = 'options.csv';
 open my $handle, '<', $path_to_file;
 chomp(my @lines = <$handle>);
 close $handle;
 
 foreach my $line (@lines) {
-	my ($group,$name,$func,$param1,$param2,$param3) = split("\t", $line); #Change me to support csv brah
+	my ($group,$name,$func,$param1,$param2,$param3) = split("\,", $line); #Change me to support csv brah
 	if ($group eq "system") {
 		if (!$param2) { $param2 = '0'};
 		if (!$param3) { $param3 = '0'};
