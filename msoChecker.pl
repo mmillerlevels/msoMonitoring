@@ -14,7 +14,7 @@ chomp(my @lines = <$handle>);
 close $handle;
 
 foreach my $line (@lines) {
-	my ($group,$name,$func,$param1,$param2,$param3) = split("\,", $line); #Change me to support csv brah
+	my ($group,$name,$func,$param1,$param2,$param3) = split("\,", $line);
 	if ($group eq "system") {
 		if (!$param2) { $param2 = '0'};
 		if (!$param3) { $param3 = '0'};
