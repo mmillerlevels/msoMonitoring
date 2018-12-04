@@ -66,8 +66,7 @@ sub system_check ($$$$$) {
 	elsif ( $function eq "DiskSpace" ) {
 		my $df = `/bin/df -h / | /bin/grep -A1 dev | grep \/\$ | /usr/bin/awk '{print \$1","\$2","\$3}'`;
 			$df =~ s/(\n\n\n|G)//go;
-		#Need to fix his up, calculaton is a bit off...
-		my ($drive,$drive_size,$drive_used) = split(/,/, $df);
+		my ($drive_size,$drive_used,$drive_avail) = split(/,/, $df);
 		print GREEN . "/bin/df -h / | /bin/grep -A1 dev | grep \/$ | /usr/bin/awk '{print \$1","\$2","\$3}'" . RESET . "\n" if $DEBUG;
 		$status = "PASS" if (($drive_used/$drive_size) * 100) < $param1;
 		$status = "FAIL" if (($drive_used/$drive_size) * 100) >= $param1;
@@ -79,6 +78,7 @@ sub system_check ($$$$$) {
 	#}
 
 	elsif ( $function eq "memUsage" ) {
+		#Something is broken with the swap calclation, it's just calculating normal memory
 		my %regexs = (
 			mem  => qr/cache:\s+(?<used>\d+)\s+(?<free>\d+)/s,
 			swap => qr/Swap:\s+\d+\s+(?<used>\d+)\s+(?<free>\d+)/s,
@@ -87,8 +87,8 @@ sub system_check ($$$$$) {
 		`/usr/bin/free -b` =~ m/$regexs{ $param1 }/s;
 		print GREEN . "/usr/bin/free -b" . RESET . "\n" if $DEBUG;
 
-		my $used = `free - | awk '/^Mem:/ {print \$3}'`;
-		my $free = `free  | awk '/^Mem:/ {print \$4}'`;
+		my $used = `free | awk '/^Mem:/ {print \$3}'`;
+		my $free = `free | awk '/^Mem:/ {print \$4}'`;
 		my $total = $used + $free;
 
 		if (defined($total)) {
@@ -96,6 +96,7 @@ sub system_check ($$$$$) {
 				my $percent_used = $used / $total * 100;
 				$status = $percent_used < $param2 ? "PASS" : "FAIL";
 				$notes = uc($param1) . " utilization is currently at " . int( $percent_used ) . "%, the threshold is " . $param2 . "%";
+				print GREEN, $status . " " . $notes . "\n" if $DEBUG;
 			}
 		}
 		else {
@@ -106,6 +107,7 @@ sub system_check ($$$$$) {
 	my $group = 'system';
 	#print $group . " " . $name . " " . $status . " " . $notes . "\n";;
 	#Will be making the output nicer
+	#@TODO I need to print out the $notes as well - Would be smart
 	print GREEN, $name . ": " . "$status\n", RESET if $status eq "PASS";
 	print GREEN, $name . ": " . "$status\n", RESET if $status eq "N/A";
 	print RED,   $name . ": " . "$status\n", RESET if $status eq "FAIL";
