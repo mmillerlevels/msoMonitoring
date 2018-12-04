@@ -1,12 +1,12 @@
-#!/usr/bin/perl
+#!/usr/bin/perl -w
 use strict;
-use warnings;
 use Term::ANSIColor qw(:constants);
+use Getopt::Long;
 
-use constant EXIT_GOOD => 2;
+use constant EXIT_GOOD => 0;
 use constant EXIT_BAD => 1;
-my $DEBUG = 1;
-
+my $DEBUG = '';
+GetOptions('debug' => \$DEBUG);
 
 my $path_to_file = 'myTSV.tsv'; #This to be cheanged to a csv
 open my $handle, '<', $path_to_file;
@@ -104,12 +104,10 @@ sub system_check ($$$$$) {
 		}
 	}
 	my $group = 'system';
-	#&PrintStatus($group,$name,$status,$notes);
-	print $group . " " . $name . " " . $status . " " . $notes . "\n";;
+	#print $group . " " . $name . " " . $status . " " . $notes . "\n";;
+	#Will be making the output nicer
+	print GREEN, $name . ": " . "$status\n", RESET if $status eq "PASS";
+	print GREEN, $name . ": " . "$status\n", RESET if $status eq "N/A";
+	print RED,   $name . ": " . "$status\n", RESET if $status eq "FAIL";
+	print BLUE,  $name . ": " . "$status\n", RESET if $status eq "UNKNOWN";
 }
-
-#Will be making the output nicer
-#print GREEN, $name . ": " . "$status\n", RESET if $status eq "PASS";
-#print GREEN, $name . ": " . "$status\n", RESET if $status eq "N/A";
-#print RED,   $name . ": " . "$status\n", RESET if $status eq "FAIL";
-#print BLUE,  $name . ": " . "$status\n", RESET if $status eq "UNKNOWN";
