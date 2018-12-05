@@ -1,4 +1,7 @@
 #!/usr/bin/perl -w
+#2018 LevelsBeyond
+#Mike Miller @mmiller
+
 use strict;
 use Term::ANSIColor qw(:constants);
 use Getopt::Long;
@@ -22,8 +25,8 @@ foreach my $line (@lines) {
 		print MAGENTA . $group . " " . $name . " " . $func . " " . $param1 . " " . $param2 . " " . $param3 . RESET . "\n" if $DEBUG;
 	}
 	else {
-		print "Looks like you're trying a module I haven't built yet!\n";
-		print "...Or you should do a git pull to update.\n";
+		print MAGENTA . "Looks like you're trying a module I haven't built yet!\n" . RESET;
+		print MAGENTA . "...Or you should do a git pull to update.\n" . RESET;
 		exit (EXIT_BAD);
 	}
 }
@@ -71,6 +74,7 @@ sub system_check ($$$$$) {
 		$status = "PASS" if (($drive_used/$drive_size) * 100) < $param1;
 		$status = "FAIL" if (($drive_used/$drive_size) * 100) >= $param1;
 		$notes = "Drive usage is " . int(($drive_used/$drive_size) * 100) . "%, the threshold is " . $param1 . "%";
+		print GREEN, $notes . "\n" if $DEBUG;
 	}
 	#Coming soon
 	#elsif ( $function eq "interfaceErrors" ) {
@@ -78,19 +82,17 @@ sub system_check ($$$$$) {
 	#}
 
 	elsif ( $function eq "memUsage" ) {
-		#Something is broken with the swap calclation, it's just calculating normal memory
-		my %regexs = (
-			mem  => qr/cache:\s+(?<used>\d+)\s+(?<free>\d+)/s,
-			swap => qr/Swap:\s+\d+\s+(?<used>\d+)\s+(?<free>\d+)/s,
-		);
-
-		`/usr/bin/free -b` =~ m/$regexs{ $param1 }/s;
-		print GREEN . "/usr/bin/free -b" . RESET . "\n" if $DEBUG;
-
-		my $used = `free | awk '/^Mem:/ {print \$3}'`;
-		my $free = `free | awk '/^Mem:/ {print \$4}'`;
-		my $total = $used + $free;
-
+		my ($used, $free, $total) = '0';
+		if ($param1 eq "mem") {
+			$used = `free | awk '/^Mem:/ {print \$3}'`;
+			$free = `free | awk '/^Mem:/ {print \$4}'`;
+			$total = $used + $free;
+		}
+		else {
+			$used = `free | awk '/^Swap:/ {print \$3}'`;
+			$free = `free | awk '/^Swap:/ {print \$4}'`;
+			$total = $used + $free;
+		}
 		if (defined($total)) {
 			if ($total > 0) {
 				my $percent_used = $used / $total * 100;
@@ -105,8 +107,6 @@ sub system_check ($$$$$) {
 		}
 	}
 	my $group = 'system';
-	#print $group . " " . $name . " " . $status . " " . $notes . "\n";;
-	#Will be making the output nicer
 	#@TODO I need to print out the $notes as well - Would be smart
 	print GREEN, $name . ": " . "$status\n", RESET if $status eq "PASS";
 	print GREEN, $name . ": " . "$status\n", RESET if $status eq "N/A";
