@@ -27,6 +27,7 @@ foreach my $line (@lines) {
 	else {
 		print MAGENTA . "Looks like you're trying a module I haven't built yet!\n" . RESET;
 		print MAGENTA . "...Or you should do a git pull to update.\n" . RESET;
+		print MAGENTA . "This isn't available: " . $group . "\n" . RESET;
 		exit (EXIT_BAD);
 	}
 }
@@ -115,23 +116,23 @@ sub system_check ($$$$$) {
 }
 
 
-sub backupsChecker ($$$$$) {
-	my ($name,$function,$param1,$param2,$param3) = @_;
-	my $status = "UNKNOWN";
-	my $notes = "";
-	my $BACKUPS_DIR = `grep \^BACKUP_DIR \/etc\/reachengine\/backup.conf | sed \'s\/\^BACKUP_DIR\=\/\/'`
-	my $ls = `ls -l --time-style=long-iso $BACKUPS_DIR/psql | grep '.tar.gz'`
-	my @lsOut = split /\s+/, $ls;
-	if (@lsOut){
-		print $lsOut[4] . ' ' . $lsOut[5] . ' ' . $lsOut[6] . ' ' . $lsOut[7] if $DEBUG;
-
-		my $days = DateTime->now->subtract(days => $param1)->strftime("%F");
-		if ($date le $days or $fileSize == 0){
-			$status = "FAIL";
-		} 
-		else {
-			$status = "PASS";
-                $notes = "Your backsups are X Days old"; #Make this more pleasent
-            }
-        }
-}
+#sub backupsChecker ($$$$$) {
+#	my ($name,$function,$param1,$param2,$param3) = @_;
+#	my $status = "UNKNOWN";
+#	my $notes = "";
+#	my $BACKUPS_DIR = `grep \^BACKUP_DIR \/etc\/reachengine\/backup.conf | sed \'s\/\^BACKUP_DIR\=\/\/'`
+#	my $ls = `ls -l --time-style=long-iso $BACKUPS_DIR/psql | grep '.tar.gz'`
+#	my @lsOut = split /\s+/, $ls;
+#	if (@lsOut){
+#		print $lsOut[4] . ' ' . $lsOut[5] . ' ' . $lsOut[6] . ' ' . $lsOut[7] if $DEBUG;
+#
+#		my $days = DateTime->now->subtract(days => $param1)->strftime("%F");
+#		if ($date le $days or $fileSize == 0){
+#			$status = "FAIL";
+#		}
+#		else {
+#			$status = "PASS";
+#                $notes = "Your backsups are X Days old"; #Make this more pleasent
+#            }
+#        }
+#}
