@@ -104,7 +104,7 @@ sub system_check ($$$$$) {
 		}
 		else {
 			$status = "FAIL";
-			$notes = "divide by zero prevented.";
+			$notes = "¡Bad math!";
 		}
 	}
 	my $group = 'system';
