@@ -68,7 +68,7 @@ sub system_check ($$$$$) {
 	}
 	elsif ( $function eq "DiskSpace" ) {
 		my $df = `/bin/df -h / | /bin/grep -A1 dev | grep \/\$ | /usr/bin/awk '{print \$1","\$2","\$3}'`;
-			$df =~ s/(\n\n\n|G)//go;
+		$df =~ s/(\n\n\n|G)//go;
 		my ($drive_size,$drive_used,$drive_avail) = split(/,/, $df);
 		print GREEN . "/bin/df -h / | /bin/grep -A1 dev | grep \/$ | /usr/bin/awk '{print \$1","\$2","\$3}'" . RESET . "\n" if $DEBUG;
 		$status = "PASS" if (($drive_used/$drive_size) * 100) < $param1;
@@ -112,4 +112,26 @@ sub system_check ($$$$$) {
 	print GREEN, $name . ": " . "$status\n", RESET if $status eq "N/A";
 	print RED,   $name . ": " . "$status\n", RESET if $status eq "FAIL";
 	print BLUE,  $name . ": " . "$status\n", RESET if $status eq "UNKNOWN";
+}
+
+
+sub backupsChecker ($$$$$) {
+	my ($name,$function,$param1,$param2,$param3) = @_;
+	my $status = "UNKNOWN";
+	my $notes = "";
+	my $BACKUPS_DIR = `grep \^BACKUP_DIR \/etc\/reachengine\/backup.conf | sed \'s\/\^BACKUP_DIR\=\/\/'`
+	my $ls = `ls -l --time-style=long-iso $BACKUPS_DIR/psql | grep '.tar.gz'`
+	my @lsOut = split /\s+/, $ls;
+	if (@lsOut){
+		print $lsOut[4] . ' ' . $lsOut[5] . ' ' . $lsOut[6] . ' ' . $lsOut[7] if $DEBUG;
+
+		my $days = DateTime->now->subtract(days => $param1)->strftime("%F");
+		if ($date le $days or $fileSize == 0){
+			$status = "FAIL";
+		} 
+		else {
+			$status = "PASS";
+                $notes = "Your backsups are X Days old"; #Make this more pleasent
+            }
+        }
 }
