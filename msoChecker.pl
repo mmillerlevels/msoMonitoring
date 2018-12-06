@@ -25,6 +25,10 @@ foreach my $line (@lines) {
 		&system_check($name,$func,$param1,$param2,$param3);
 		print MAGENTA . $group . " " . $name . " " . $func . " " . $param1 . " " . $param2 . " " . $param3 . RESET . "\n" if $DEBUG;
 	}
+	elsif ($group eq "backups") {
+	#Backups logic - Just putting this here so I 'member to put this in
+	print "Do stuff here\n";
+	}
 	else {
 		print MAGENTA . "Looks like you're trying a module I haven't built yet!\n" . RESET;
 		print MAGENTA . "...Or you should do a git pull to update.\n" . RESET;
@@ -137,3 +141,6 @@ sub backupsChecker ($$$$$) {
 		 }
         }
 }
+
+#@TODO
+#Make a printer function, to prevent repetative code
