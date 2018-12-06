@@ -5,6 +5,7 @@
 use strict;
 use Term::ANSIColor qw(:constants);
 use Getopt::Long;
+use DateTime;
 
 use constant EXIT_GOOD => 0;
 use constant EXIT_BAD => 1;
@@ -19,7 +20,7 @@ close $handle;
 foreach my $line (@lines) {
 	my ($group,$name,$func,$param1,$param2,$param3) = split("\,", $line);
 	if ($group eq "system") {
-		if (!$param2) { $param2 = '0'};
+		if (!$param2) { ($param2,$param3) = '0'};
 		if (!$param3) { $param3 = '0'};
 		&system_check($name,$func,$param1,$param2,$param3);
 		print MAGENTA . $group . " " . $name . " " . $func . " " . $param1 . " " . $param2 . " " . $param3 . RESET . "\n" if $DEBUG;
@@ -115,24 +116,24 @@ sub system_check ($$$$$) {
 	print BLUE,  $name . ": " . "$status\n", RESET if $status eq "UNKNOWN";
 }
 
-
-#sub backupsChecker ($$$$$) {
-#	my ($name,$function,$param1,$param2,$param3) = @_;
-#	my $status = "UNKNOWN";
-#	my $notes = "";
-#	my $BACKUPS_DIR = `grep \^BACKUP_DIR \/etc\/reachengine\/backup.conf | sed \'s\/\^BACKUP_DIR\=\/\/'`
-#	my $ls = `ls -l --time-style=long-iso $BACKUPS_DIR/psql | grep '.tar.gz'`
-#	my @lsOut = split /\s+/, $ls;
-#	if (@lsOut){
-#		print $lsOut[4] . ' ' . $lsOut[5] . ' ' . $lsOut[6] . ' ' . $lsOut[7] if $DEBUG;
-#
-#		my $days = DateTime->now->subtract(days => $param1)->strftime("%F");
-#		if ($date le $days or $fileSize == 0){
-#			$status = "FAIL";
-#		}
-#		else {
-#			$status = "PASS";
-#                $notes = "Your backsups are X Days old"; #Make this more pleasent
-#            }
-#        }
-#}
+sub backupsChecker ($$$$$) {
+	my ($name,$function,$param1,$param2,$param3) = @_;
+	my $status = "UNKNOWN";
+	my $notes = "";
+	my $BACKUPS_DIR = `grep \^BACKUP_DIR \/etc\/reachengine\/backup.conf | sed \'s\/\^BACKUP_DIR\=\/\/'`;
+	my $ls = `ls -l --time-style=long-iso $BACKUPS_DIR | grep '.tar.gz'`;
+	my @lsOut = split /\s+/, $ls;
+	my $date = $lsOut[5];
+	my $fileSize = $lsOut[4];
+	if (@lsOut){
+		print $lsOut[4] . ' ' . $lsOut[5] . ' ' . $lsOut[6] . ' ' . $lsOut[7] if $DEBUG;
+		my $days = DateTime->now->subtract(days => $param1)->strftime("%F");
+		if ($date le $days or $fileSize == 0){
+			$status = "FAIL";
+		}
+		else {
+			$status = "PASS";
+	                $notes = "Your backsups are X Days old"; #I need to calculate this out
+		 }
+        }
+}
