@@ -8,7 +8,7 @@ The current disk check is barebones and only will calculate out the root partiti
 
 
 
-# Pertinent Gists
+# Requirements
+[DateTime.pm](https://github.com/houseabsolute/DateTime.pm)
 
-[My memChecker routine](https://gist.github.com/mmillerlevels/0e0399608e6e35c928ca23da59a0c486)
-^ This probably isn't going to be helpful ~ But nevertheless I'll leave it here for now.
+`cpan DateTime` Or `yum install perl-DateTime` Or Compile the above
