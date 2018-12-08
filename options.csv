@@ -1,4 +1,3 @@
-group,name,func,param1,param2,param3
 system,CPU Usage,CpuWarn,5
 system,Drive Errors,driveErrors,translated ATA
 system,Drive Errors,driveErrors,failed command: READ DMA EXT

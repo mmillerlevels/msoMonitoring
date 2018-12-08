@@ -27,7 +27,7 @@ foreach my $line (@lines) {
 	}
 	elsif ($group eq "backups") {
 	#Backups logic - Just putting this here so I 'member to put this in
-	print "Do stuff here\n";
+	print MAGENTA . "~Backups coming soon~" . RESET . "\n";
 	}
 	else {
 		print MAGENTA . "Looks like you're trying a module I haven't built yet!\n" . RESET;
@@ -75,8 +75,12 @@ sub system_check ($$$$$) {
 	elsif ( $function eq "DiskSpace" ) {
 		my $df = `/bin/df -h / | /bin/grep -A1 dev | grep \/\$ | /usr/bin/awk '{print \$1","\$2","\$3}'`;
 		$df =~ s/(\n\n\n|G)//go;
-		my ($drive_size,$drive_used,$drive_avail) = split(/,/, $df);
-		print GREEN . "/bin/df -h / | /bin/grep -A1 dev | grep \/$ | /usr/bin/awk '{print \$1","\$2","\$3}'" . RESET . "\n" if $DEBUG;
+		if ($df =~ m/\/dev\/sd/){
+			$df = `/bin/df -h / | /bin/grep -A1 dev | grep \/\$ | /usr/bin/awk '{print \$2","\$3","\$4}'`;
+			$df =~ s/(\n\n|G)//go;
+		}
+		print GREEN . "/bin/df -h / | /bin/grep -A1 dev | grep \/$ | /usr/bin/awk '{print \$2","\$3","\$4}'" . RESET . "\n" if $DEBUG;
+		my ($drive_size,$drive_used,$drive_avail) = split(/,/, $df);	
 		$status = "PASS" if (($drive_used/$drive_size) * 100) < $param1;
 		$status = "FAIL" if (($drive_used/$drive_size) * 100) >= $param1;
 		$notes = "Drive usage is " . int(($drive_used/$drive_size) * 100) . "%, the threshold is " . $param1 . "%";
@@ -125,6 +129,11 @@ sub backupsChecker ($$$$$) {
 	my $status = "UNKNOWN";
 	my $notes = "";
 	my $BACKUPS_DIR = `grep \^BACKUP_DIR \/etc\/reachengine\/backup.conf | sed \'s\/\^BACKUP_DIR\=\/\/'`;
+	#Add some logic here for checking for the three? Dirrent bacup files
+	#that we keep here
+	#Will nedd to add this piece into a larger logic gate
+	#If I add LVM snapshot checks and ElasticSearch backup checks.
+	#Potentially Postgres binary backups?
 	my $ls = `ls -l --time-style=long-iso $BACKUPS_DIR | grep '.tar.gz'`;
 	my @lsOut = split /\s+/, $ls;
 	my $date = $lsOut[5];
