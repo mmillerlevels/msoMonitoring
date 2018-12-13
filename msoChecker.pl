@@ -28,6 +28,7 @@ foreach my $line (@lines) {
 	elsif ($group eq "backups") {
 	#Backups logic - Just putting this here so I 'member to put this in
 	print MAGENTA . "~Backups coming soon~" . RESET . "\n";
+	print "The current time is " . DateTime->now . "\n";
 	}
 	else {
 		print MAGENTA . "Looks like you're trying a module I haven't built yet!\n" . RESET;
@@ -80,7 +81,7 @@ sub system_check ($$$$$) {
 			$df =~ s/(\n\n|G)//go;
 		}
 		print GREEN . "/bin/df -h / | /bin/grep -A1 dev | grep \/$ | /usr/bin/awk '{print \$2","\$3","\$4}'" . RESET . "\n" if $DEBUG;
-		my ($drive_size,$drive_used,$drive_avail) = split(/,/, $df);	
+		my ($drive_size,$drive_used,$drive_avail) = split(/,/, $df);
 		$status = "PASS" if (($drive_used/$drive_size) * 100) < $param1;
 		$status = "FAIL" if (($drive_used/$drive_size) * 100) >= $param1;
 		$notes = "Drive usage is " . int(($drive_used/$drive_size) * 100) . "%, the threshold is " . $param1 . "%";
@@ -129,6 +130,7 @@ sub backupsChecker ($$$$$) {
 	my $status = "UNKNOWN";
 	my $notes = "";
 	my $BACKUPS_DIR = `grep \^BACKUP_DIR \/etc\/reachengine\/backup.conf | sed \'s\/\^BACKUP_DIR\=\/\/'`;
+	print "I'm looking in $BACKUPS_DIR for backups!\n" if $DEBUG;
 	#Add some logic here for checking for the three? Dirrent bacup files
 	#that we keep here
 	#Will nedd to add this piece into a larger logic gate
