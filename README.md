@@ -12,3 +12,5 @@ The current disk check is barebones and only will calculate out the root partiti
 [DateTime.pm](https://github.com/houseabsolute/DateTime.pm)
 
 `cpan DateTime` Or `yum install perl-DateTime` Or Compile the above
+
+Cpan has been weird lately on Cent 6.X, so I'd use the Yum option...Haven't test on Debain/Ubuntu...Wont test on anything other than RHEL/Cent.  You can do what'd you'd like however.
