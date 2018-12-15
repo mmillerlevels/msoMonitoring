@@ -1,4 +1,4 @@
-]#!/usr/bin/perl -w
+#!/usr/bin/perl -w
 #2018 LevelsBeyond
 #Mike Miller @mmiller
 
