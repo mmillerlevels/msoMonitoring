@@ -1,4 +1,4 @@
-#!/usr/bin/perl -w
+]#!/usr/bin/perl -w
 #2018 LevelsBeyond
 #Mike Miller @mmiller
 
@@ -26,9 +26,9 @@ foreach my $line (@lines) {
 		print MAGENTA . $group . " " . $name . " " . $func . " " . $param1 . " " . $param2 . " " . $param3 . RESET . "\n" if $DEBUG;
 	}
 	elsif ($group eq "backups") {
-	#Backups logic - Just putting this here so I 'member to put this in
-	print MAGENTA . "~Backups coming soon~" . RESET . "\n";
-	print "The current time is " . DateTime->now . "\n";
+		#Backups logic - Just putting this here so I 'member to put this in
+		#&backupsChecker($name,$func,$param1,$param2,$param3);
+		print MAGENTA . "~Backups coming soon~" . RESET . "\n";
 	}
 	else {
 		print MAGENTA . "Looks like you're trying a module I haven't built yet!\n" . RESET;
@@ -38,7 +38,7 @@ foreach my $line (@lines) {
 	}
 }
 
-##############################################################
+#Subroutines Below
 
 sub system_check ($$$$$) {
 	my ($name,$function,$param1,$param2,$param3) = @_;
@@ -130,18 +130,20 @@ sub backupsChecker ($$$$$) {
 	my $status = "UNKNOWN";
 	my $notes = "";
 	my $BACKUPS_DIR = `grep \^BACKUP_DIR \/etc\/reachengine\/backup.conf | sed \'s\/\^BACKUP_DIR\=\/\/'`;
-	print "I'm looking in $BACKUPS_DIR for backups!\n" if $DEBUG;
+	chomp($BACKUPS_DIR);
+	print MAGENTA, $name . " " . $function . " " . $param1 . " " . $param2 . " " . $param3 . RESET . "\n" if $DEBUG;
+	print "I'm looking in $BACKUPS_DIR for the $name\n";
 	#Add some logic here for checking for the three? Dirrent bacup files
 	#that we keep here
 	#Will nedd to add this piece into a larger logic gate
 	#If I add LVM snapshot checks and ElasticSearch backup checks.
 	#Potentially Postgres binary backups?
-	my $ls = `ls -l --time-style=long-iso $BACKUPS_DIR | grep '.tar.gz'`;
+	my $ls = `ls -l --time-style=long-iso $BACKUPS_DIR | grep .tar.gz`;
 	my @lsOut = split /\s+/, $ls;
 	my $date = $lsOut[5];
 	my $fileSize = $lsOut[4];
 	if (@lsOut){
-		print $lsOut[4] . ' ' . $lsOut[5] . ' ' . $lsOut[6] . ' ' . $lsOut[7] if $DEBUG;
+		#print $lsOut[4] . ' ' . $lsOut[5] . ' ' . $lsOut[6] . ' ' . $lsOut[7] if $DEBUG;
 		my $days = DateTime->now->subtract(days => $param1)->strftime("%F");
 		if ($date le $days or $fileSize == 0){
 			$status = "FAIL";
@@ -153,5 +155,16 @@ sub backupsChecker ($$$$$) {
         }
 }
 
+
+#&statusPrinter($name, $status, $notes);
 #@TODO
 #Make a printer function, to prevent repetative code
+sub statusPrinter ($$$) {
+	my ($name, $status, $notes) = @_;
+	print "***********************************************************";
+	print GREEN, $name . ": " . "$status\n", RESET if $status eq "PASS";
+	print GREEN, $name . ": " . "$status\n", RESET if $status eq "N/A";
+	print RED,   $name . ": " . "$status\n", RESET if $status eq "FAIL";
+	print BLUE,  $name . ": " . "$status\n", RESET if $status eq "UNKNOWN";
+	print "***********************************************************";
+}
