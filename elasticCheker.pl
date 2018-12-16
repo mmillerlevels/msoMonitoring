@@ -18,3 +18,8 @@ print "Taking a dump for debugging reasons - Kek\n";
 print "#################################################\n";
 print Dumper $decodedReturn;
 print "#################################################\n";
+
+#Just testing soem stuff before I get some logic going
+print "\n";
+print $decodedReturn->{'cluster_name'}."\n";
+print $decodedReturn->{'active_shards'}."\n";
