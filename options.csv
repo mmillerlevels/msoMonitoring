@@ -7,3 +7,4 @@ system,Interface Errors,interfaceErrors,eth0
 system,Ram Usage,memUsage,mem,85
 system,Swap Usage,memUsage,swap,2
 backups,Postgres Backups,BackupCheck,2,,
+elastic,ElasticSearch,elasticCheck,1,,
