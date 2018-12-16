@@ -2,20 +2,19 @@
 #2018 LevelsBeyond
 #Mike Miller @mmiller
 
-use Search::Elasticsearch;
+use strict;
+use LWP::Simple;
+use JSON qw( decode_json );
+use Data::Dumper;
 
-my $e = Search::Elasticsearch->new();
+my $elasticURL = "http://127.0.0.1:9200/_cluster/health";
+my $return = get($elasticURL);
+	die "I can't hit ElasticSearch!\n" unless defined $return;
+my $decodedReturn = decode_json($return);
 
-# Cluster requests:
-my $info        = $e->cluster->info;
-my $health      = $e->cluster->health;
-my $node_stats  = $e->cluster->node_stats;
-
-
-print "\n";
-print "Here is an Elastic info request\n";
-print $info . "\n";
-print "The Elastic health is next\n";
-print $health . "\n";
-print "The Elastic node status is\n";
-print $node_stauts . "\n";
+#Taking a dump for debugging
+print "#################################################\n";
+print "Taking a dump for debugging reasons - Kek\n";
+print "#################################################\n";
+print Dumper $decodedReturn;
+print "#################################################\n";
