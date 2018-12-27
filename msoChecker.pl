@@ -6,6 +6,7 @@ use strict;
 use Term::ANSIColor qw(:constants);
 use Getopt::Long;
 use DateTime;
+require 'elasticCheker.pl';
 
 use constant EXIT_GOOD => 0;
 use constant EXIT_BAD => 1;
