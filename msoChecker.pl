@@ -6,7 +6,7 @@ use strict;
 use Term::ANSIColor qw(:constants);
 use Getopt::Long;
 use DateTime;
-require 'elasticCheker.pl';
+use elasticChecker;
 
 use constant EXIT_GOOD => 0;
 use constant EXIT_BAD => 1;
@@ -28,8 +28,13 @@ foreach my $line (@lines) {
 	}
 	elsif ($group eq "backups") {
 		#Backups logic - Just putting this here so I 'member to put this in
-		#&backupsChecker($name,$func,$param1,$param2,$param3);
-		print MAGENTA . "~Backups coming soon~" . RESET . "\n";
+		&backupsChecker($name,$func,$param1,$param2,$param3);
+		#print MAGENTA . "~Backups coming soon~" . RESET . "\n";
+	}
+	elsif ($group eq "elastic") {
+		#Elastictastic
+		#elasticChecker->elasticGeneral;
+		print MAGENTA . "~Elastic coming soon~" . RESET . "\n";
 	}
 	else {
 		print MAGENTA . "Looks like you're trying a module I haven't built yet!\n" . RESET;
@@ -154,6 +159,13 @@ sub backupsChecker ($$$$$) {
 	                $notes = "Your backsups are X Days old"; #I need to calculate this out
 		 }
         }
+	print "***********************************************************";
+	print GREEN, $name . ": " . "$status\n", RESET if $status eq "PASS";
+	print GREEN, $name . ": " . "$status\n", RESET if $status eq "N/A";
+	print RED,   $name . ": " . "$status\n", RESET if $status eq "FAIL";
+	print BLUE,  $name . ": " . "$status\n", RESET if $status eq "UNKNOWN";
+	print "***********************************************************";
+
 }
 
 
