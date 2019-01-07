@@ -124,11 +124,7 @@ sub system_check ($$$$$) {
 		}
 	}
 	my $group = 'system';
-	#@TODO I need to print out the $notes as well - Would be smart
-	print GREEN, $name . ": " . "$status\n", RESET if $status eq "PASS";
-	print GREEN, $name . ": " . "$status\n", RESET if $status eq "N/A";
-	print RED,   $name . ": " . "$status\n", RESET if $status eq "FAIL";
-	print BLUE,  $name . ": " . "$status\n", RESET if $status eq "UNKNOWN";
+	&statusPrinter($name,$status,$notes);
 }
 
 sub backupsChecker ($$$$$) {
@@ -138,7 +134,7 @@ sub backupsChecker ($$$$$) {
 	my $BACKUPS_DIR = `grep \^BACKUP_DIR \/etc\/reachengine\/backup.conf | sed \'s\/\^BACKUP_DIR\=\/\/'`;
 	chomp($BACKUPS_DIR);
 	print MAGENTA, $name . " " . $function . " " . $param1 . " " . $param2 . " " . $param3 . RESET . "\n" if $DEBUG;
-	print "I'm looking in $BACKUPS_DIR for the $name\n";
+	print MAGENTA, "I'm looking in $BACKUPS_DIR for the $name\n" . RESET if $DEBUG;
 	#Add some logic here for checking for the three? Dirrent bacup files
 	#that we keep here
 	#Will nedd to add this piece into a larger logic gate
@@ -159,25 +155,14 @@ sub backupsChecker ($$$$$) {
 	                $notes = "Your backsups are X Days old"; #I need to calculate this out
 		 }
         }
-	print "***********************************************************";
-	print GREEN, $name . ": " . "$status\n", RESET if $status eq "PASS";
-	print GREEN, $name . ": " . "$status\n", RESET if $status eq "N/A";
-	print RED,   $name . ": " . "$status\n", RESET if $status eq "FAIL";
-	print BLUE,  $name . ": " . "$status\n", RESET if $status eq "UNKNOWN";
-	print "***********************************************************";
-
+	&statusPrinter($name,$status,$notes);
 }
 
-
-#&statusPrinter($name, $status, $notes);
-#@TODO
-#Make a printer function, to prevent repetative code
+#I need to print out the $notes as well - Would be smart
 sub statusPrinter ($$$) {
 	my ($name, $status, $notes) = @_;
-	print "***********************************************************";
 	print GREEN, $name . ": " . "$status\n", RESET if $status eq "PASS";
 	print GREEN, $name . ": " . "$status\n", RESET if $status eq "N/A";
 	print RED,   $name . ": " . "$status\n", RESET if $status eq "FAIL";
 	print BLUE,  $name . ": " . "$status\n", RESET if $status eq "UNKNOWN";
-	print "***********************************************************";
 }
