@@ -14,3 +14,6 @@ The current disk check is barebones and only will calculate out the root partiti
 `cpan DateTime` Or `yum install perl-DateTime` Or Compile the above
 
 Cpan has been weird lately on Cent 6.X, so I'd use the Yum option...Haven't test on Debain/Ubuntu...Wont test on anything other than RHEL/Cent.  You can do what'd you'd like however.
+
+
+This requirements section really needs to be updated, at some point.  My intention is to make this as portable as possible for Cent/RHEL/AWS.
