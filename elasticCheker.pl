@@ -13,13 +13,13 @@ my $return = get($elasticURL);
 my $decodedReturn = decode_json($return);
 
 #Taking a dump for debugging
-print "#################################################\n";
-print "Taking a dump for debugging reasons - Kek\n";
-print "#################################################\n";
-print Dumper $decodedReturn;
-print "#################################################\n";
+#print "Taking a dump for debugging reasons - Kek\n";
+#print Dumper $decodedReturn;
 
 #Just testing soem stuff before I get some logic going
 print "\n";
 print $decodedReturn->{'cluster_name'}."\n";
 print $decodedReturn->{'active_shards'}."\n";
+
+
+#We need to do something with this data!
