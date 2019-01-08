@@ -2,12 +2,15 @@
 #2018 LevelsBeyond
 #Mike Miller @mmiller
 
+package elasticChecker;
 use strict;
 use LWP::Simple;
 use JSON qw( decode_json );
 use Data::Dumper;
 
-my $elasticURL = "http://127.0.0.1:9200/_cluster/health";
+sub elasticGeneral {
+
+my $elasticURL = "http://10.20.21.194:9200/_cluster/health";
 my $return = get($elasticURL);
 	die "I can't hit ElasticSearch!\n" unless defined $return;
 my $decodedReturn = decode_json($return);
@@ -20,6 +23,9 @@ my $decodedReturn = decode_json($return);
 print "\n";
 print $decodedReturn->{'cluster_name'}."\n";
 print $decodedReturn->{'active_shards'}."\n";
+}
 
+sub elasticReach {
+}
 
-#We need to do something with this data!
+1;
