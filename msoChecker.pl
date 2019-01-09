@@ -36,6 +36,9 @@ foreach my $line (@lines) {
 		#elasticChecker->elasticGeneral;
 		print MAGENTA . "~Elastic coming soon~" . RESET . "\n";
 	}
+	#elsif ($group eq "license") {
+	#print my $licenseCheck = `sh licenseChecker.sh` . \n;
+	#}
 	else {
 		print MAGENTA . "Looks like you're trying a module I haven't built yet!\n" . RESET;
 		print MAGENTA . "...Or you should do a git pull to update.\n" . RESET;
