@@ -1,5 +1,8 @@
 #!/bin/sh
 
+#2019 LevelsBeyond
+#Mike Miller @mmiller
+
 #Get date within license, convert to epoch, get one week out
 licenseDate=$(grep '^Expiration' license.lic | sed 's/^Expiration=//')
 licenseDateUnix=$(date -d $licenseDate +%s)
