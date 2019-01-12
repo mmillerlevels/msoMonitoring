@@ -6,6 +6,14 @@ Right now the script is very barebones, however, this is being written to be fut
 
 The current disk check is barebones and only will calculate out the root partition's space.  Need to make this easier to monitor all of the SAN mounts we use often.  
 
+```
+/msoMonitoring
+├── msoChecker.pl
+│   ├── elasticChecker.pm
+│   ├── properProps.pm
+│   └── licenseChecker.sh
+└── options.csv
+```
 
 
 # Requirements
