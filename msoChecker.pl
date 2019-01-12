@@ -39,9 +39,9 @@ foreach my $line (@lines) {
 	elsif ($group eq "nomongo") {
 		properProps->noMoMongo;
 	}
-	#elsif ($group eq "license") {
-	#print my $licenseCheck = `sh licenseChecker.sh` . \n;
-	#}
+	elsif ($group eq "license") {
+	print my $licenseCheck = `sh licenseChecker.sh` . "\n";
+	}
 	else {
 		print MAGENTA . "Looks like you're trying a module I haven't built yet!\n" . RESET;
 		print MAGENTA . "...Or you should do a git pull to update.\n" . RESET;
