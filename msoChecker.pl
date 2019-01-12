@@ -7,6 +7,7 @@ use Term::ANSIColor qw(:constants);
 use Getopt::Long;
 use DateTime;
 use elasticChecker;
+use properProps;
 
 use constant EXIT_GOOD => 0;
 use constant EXIT_BAD => 1;
@@ -29,12 +30,14 @@ foreach my $line (@lines) {
 	elsif ($group eq "backups") {
 		#Backups logic - Just putting this here so I 'member to put this in
 		&backupsChecker($name,$func,$param1,$param2,$param3);
-		#print MAGENTA . "~Backups coming soon~" . RESET . "\n";
 	}
 	elsif ($group eq "elastic") {
 		#Elastictastic
 		#elasticChecker->elasticGeneral;
-		print MAGENTA . "~Elastic coming soon~" . RESET . "\n";
+		#print MAGENTA . "~Elastic coming soon~" . RESET . "\n";
+	}
+	elsif ($group eq "nomongo") {
+		properProps->noMoMongo;
 	}
 	#elsif ($group eq "license") {
 	#print my $licenseCheck = `sh licenseChecker.sh` . \n;
@@ -43,7 +46,6 @@ foreach my $line (@lines) {
 		print MAGENTA . "Looks like you're trying a module I haven't built yet!\n" . RESET;
 		print MAGENTA . "...Or you should do a git pull to update.\n" . RESET;
 		print MAGENTA . "This isn't available: " . $group . "\n" . RESET;
-		exit (EXIT_BAD);
 	}
 }
 
@@ -96,11 +98,6 @@ sub system_check ($$$$$) {
 		$notes = "Drive usage is " . int(($drive_used/$drive_size) * 100) . "%, the threshold is " . $param1 . "%";
 		print GREEN, $notes . "\n" if $DEBUG;
 	}
-	#Coming soon
-	#elsif ( $function eq "interfaceErrors" ) {
-	#	($status, $notes) = interfaceErrors($param1);
-	#}
-
 	elsif ( $function eq "memUsage" ) {
 		my ($used, $free, $total) = '0';
 		if ($param1 eq "mem") {
