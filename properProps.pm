@@ -6,6 +6,9 @@ package properProps;
 use strict;
 use Tie::File;
 
+our $DEBUG;
+*DEBUG = \$main::DEBUG;
+
 sub noMoMongo {
 	my $fileName   = 'myProps.prop';
 	my $searchStr  = 'mongo.enabled=true';
@@ -19,6 +22,6 @@ sub noMoMongo {
 	}
 
 	push @fcont, $replaceStr if ! $count;
-	print "Confirmed Mogno is no 'mo!\n";
+	print "Confirmed Mogno is no 'mo!\n" if $DEBUG;
 }
 1;
