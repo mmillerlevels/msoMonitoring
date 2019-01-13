@@ -3,6 +3,7 @@
 
 I need to update this (Don't believe everything you see on the internet!)...And get a new list of requirements for the script.  I need to package this nicely so no internet boxes can still run without qualm.  
 
+This script assumes you're on the 2.3.X train or higher.
 
 The current disk check is barebones and only will calculate out the root partition's space.  Need to make this easier to monitor all of the SAN mounts we use often.  
 
