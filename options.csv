@@ -3,7 +3,6 @@ system,CPU Usage,CpuWarn,5
 system,Drive Errors,driveErrors,translated ATA
 system,Drive Errors,driveErrors,failed command: READ DMA EXT
 system,Drive Usage,DiskSpace,75
-system,Interface Errors,interfaceErrors,eth0
 system,Ram Usage,memUsage,mem,85
 system,Swap Usage,memUsage,swap,2
 backups,Postgres Backups,BackupCheck,2,,
