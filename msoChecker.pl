@@ -8,10 +8,11 @@ use Getopt::Long;
 use DateTime;
 use elasticChecker;
 use properProps;
+use mPrint;
 
 use constant EXIT_GOOD => 0;
 use constant EXIT_BAD => 1;
-my $DEBUG = '';
+our $DEBUG = '';
 GetOptions('debug' => \$DEBUG);
 
 my $path_to_file = 'options.csv';
@@ -22,8 +23,8 @@ close $handle;
 foreach my $line (@lines) {
 	my ($group,$name,$func,$param1,$param2,$param3) = split("\,", $line);
 	if ($group eq "system") {
-		if (!$param2) { ($param2,$param3) = '0'};
-		if (!$param3) { $param3 = '0'};
+		if (!$param2) { ($param2,$param3) = '0'; }
+		if (!$param3) { $param3 = '0'; }
 		&system_check($name,$func,$param1,$param2,$param3);
 		print MAGENTA . $group . " " . $name . " " . $func . " " . $param1 . " " . $param2 . " " . $param3 . RESET . "\n" if $DEBUG;
 	}
@@ -124,7 +125,8 @@ sub system_check ($$$$$) {
 		}
 	}
 	my $group = 'system';
-	&statusPrinter($name,$status,$notes);
+	#&statusPrinter($name,$status,$notes);
+	mPrint::statusPrinter($name,$status,$notes);
 }
 
 sub backupsChecker ($$$$$) {
@@ -155,14 +157,15 @@ sub backupsChecker ($$$$$) {
 	                $notes = "Your backsups are X Days old"; #I need to calculate this out
 		 }
         }
-	&statusPrinter($name,$status,$notes);
+	#&statusPrinter($name,$status,$notes);
+	mPrint::statusPrinter($name,$status,$notes);
 }
 
 #I need to print out the $notes as well - Would be smart
-sub statusPrinter ($$$) {
-	my ($name, $status, $notes) = @_;
-	print GREEN, $name . ": " . "$status\n", RESET if $status eq "PASS";
-	print GREEN, $name . ": " . "$status\n", RESET if $status eq "N/A";
-	print RED,   $name . ": " . "$status\n", RESET if $status eq "FAIL";
-	print BLUE,  $name . ": " . "$status\n", RESET if $status eq "UNKNOWN";
-}
+#sub statusPrinter ($$$) {
+#	my ($name, $status, $notes) = @_;
+#	print GREEN, $name . ": " . "$status\n", RESET if $status eq "PASS";
+#	print GREEN, $name . ": " . "$status\n", RESET if $status eq "N/A";
+#	print RED,   $name . ": " . "$status\n", RESET if $status eq "FAIL";
+#	print BLUE,  $name . ": " . "$status\n", RESET if $status eq "UNKNOWN";
+#}
