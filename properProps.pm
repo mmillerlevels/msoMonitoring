@@ -30,12 +30,12 @@ sub noMoMongo {
 }
 
 sub vantageHost {
-	my $line = `grep \'\^vantage.host\=\' $props |  sed \'s\/\^vantage.hostn=\/\/\'`;
+	my $line = `grep \'\^vantage.defaultHost\=\' $props |  sed \'s\/\^vantage.defaultHostn=\/\/\'`;
 	if ($line =~ /\b(?:(?:2(?:[0-4][0-9]|5[0-5])|[0-1]?[0-9]?[0-9])\.){3}(?:(?:2([0-4][0-9]|5[0-5])|[0-1]?[0-9]?[0-9]))\b/) {
 		print "You need a host name for your Vantage property!\n";
 	}
 	else {
-            print "Your vantage.host prop looks good\n" if $DEBUG;
+            print "Your vantage.defaultHost prop looks good\n" if $DEBUG;
 	}
 }
 
