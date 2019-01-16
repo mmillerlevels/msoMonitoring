@@ -9,6 +9,7 @@ use DateTime;
 use elasticChecker;
 use properProps;
 use mPrint;
+use bckMeUp;
 
 use constant EXIT_GOOD => 0;
 use constant EXIT_BAD => 1;
@@ -30,7 +31,7 @@ foreach my $line (@lines) {
 	}
 	elsif ($group eq "backups") {
 		#Backups logic - Just putting this here so I 'member to put this in
-		&backupsChecker($name,$func,$param1,$param2,$param3);
+		bckMeUp::backupsChecker($name,$func,$param1,$param2,$param3);
 	}
 	elsif ($group eq "elastic") {
 		#Elastictastic
@@ -39,6 +40,7 @@ foreach my $line (@lines) {
 	}
 	elsif ($group eq "nomongo") {
 		properProps->noMoMongo;
+		properProps->vantageHost;
 	}
 	elsif ($group eq "license") {
 	print my $licenseCheck = `sh licenseChecker.sh` . "\n";
@@ -125,47 +127,5 @@ sub system_check ($$$$$) {
 		}
 	}
 	my $group = 'system';
-	#&statusPrinter($name,$status,$notes);
 	mPrint::statusPrinter($name,$status,$notes);
 }
-
-sub backupsChecker ($$$$$) {
-	my ($name,$function,$param1,$param2,$param3) = @_;
-	my $status = "UNKNOWN";
-	my $notes = "";
-	my $BACKUPS_DIR = `grep \^BACKUP_DIR \/etc\/reachengine\/backup.conf | sed \'s\/\^BACKUP_DIR\=\/\/'`;
-	chomp($BACKUPS_DIR);
-	print MAGENTA, $name . " " . $function . " " . $param1 . " " . $param2 . " " . $param3 . RESET . "\n" if $DEBUG;
-	print MAGENTA, "I'm looking in $BACKUPS_DIR for the $name\n" . RESET if $DEBUG;
-	#Add some logic here for checking for the three? Dirrent bacup files
-	#that we keep here
-	#Will nedd to add this piece into a larger logic gate
-	#If I add LVM snapshot checks and ElasticSearch backup checks.
-	#Potentially Postgres binary backups?
-	my $ls = `ls -l --time-style=long-iso $BACKUPS_DIR | grep .tar.gz`;
-	my @lsOut = split /\s+/, $ls;
-	my $date = $lsOut[5];
-	my $fileSize = $lsOut[4];
-	if (@lsOut){
-		#print $lsOut[4] . ' ' . $lsOut[5] . ' ' . $lsOut[6] . ' ' . $lsOut[7] if $DEBUG;
-		my $days = DateTime->now->subtract(days => $param1)->strftime("%F");
-		if ($date le $days or $fileSize == 0){
-			$status = "FAIL";
-		}
-		else {
-			$status = "PASS";
-	                $notes = "Your backsups are X Days old"; #I need to calculate this out
-		 }
-        }
-	#&statusPrinter($name,$status,$notes);
-	mPrint::statusPrinter($name,$status,$notes);
-}
-
-#I need to print out the $notes as well - Would be smart
-#sub statusPrinter ($$$) {
-#	my ($name, $status, $notes) = @_;
-#	print GREEN, $name . ": " . "$status\n", RESET if $status eq "PASS";
-#	print GREEN, $name . ": " . "$status\n", RESET if $status eq "N/A";
-#	print RED,   $name . ": " . "$status\n", RESET if $status eq "FAIL";
-#	print BLUE,  $name . ": " . "$status\n", RESET if $status eq "UNKNOWN";
-#}
