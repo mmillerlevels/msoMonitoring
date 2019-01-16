@@ -24,7 +24,7 @@ sub noMoMongo {
 
 	my %exp = map { $_ => 1 } @fcont;
 	if(!exists($exp{$replaceStr})) {
-		push @fcont, $replaceStr if $count != '1';
+		push @fcont, $replaceStr;
 	}
 	print "Confirmed Mogno is no 'mo!\n" if $DEBUG;
 }
