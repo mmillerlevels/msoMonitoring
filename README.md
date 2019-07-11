@@ -1,6 +1,10 @@
 ## msoMonitoring
 ### Getting a script together for better MSO checks
 
+
+##This is coming back!  Will be working on resurecting this project during the week of the 15th!
+
+
 I need to update this (Don't believe everything you see on the internet!)...And get a new list of requirements for the script.  I need to package this nicely so no internet boxes can still run without qualm.  
 
 This script assumes you're on the 2.3.X train or higher.
@@ -15,7 +19,7 @@ The current disk check is barebones and only will calculate out the root partiti
 │   └── licenseChecker.sh
 └── options.csv
 ```
-
+(This is a little outdated but you get the gist of it)
 
 # Requirements
 [DateTime.pm](https://github.com/houseabsolute/DateTime.pm)
