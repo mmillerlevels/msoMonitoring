@@ -4,7 +4,7 @@
 #Mike Miller @mmiller
 
 #Get date within license, convert to epoch, get one week out
-licenseDate=$(grep '^Expiration' license.lic | sed 's/^Expiration=//')
+licenseDate=$(grep '^Expiration' /reachengine/tomcat/lib/license.lic | sed 's/^Expiration=//')
 licenseDateUnix=$(date -d $licenseDate +%s)
 myDate=$(date -d "+7 days" +%s)
 
